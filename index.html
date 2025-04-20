@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlessingBite </title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF6B6B;
+            --secondary: #4ECDC4;
+            --accent: #FFE66D;
+            --dark: #292F36;
+            --light: #F7FFF7;
+            --gray: #6c757d;
+            --light-gray: #f8f9fa;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+
+        /* 3D Animated Header */
+        .header-3d {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 100px 0;
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+        }
+
+        .header-3d::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            background: url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80') center/cover;
+            opacity: 0.08;
+            transform: rotateX(75deg) translateZ(-50px);
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: rotateX(75deg) translateZ(-50px) rotate(0deg); }
+            100% { transform: rotateX(75deg) translateZ(-50px) rotate(360deg); }
+        }
+
+        .logo-3d {
+            width: 150px;
+            height: 150px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            transform: rotateY(20deg) rotateX(10deg);
+            transition: all 0.5s ease;
+            margin: 0 auto 30px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo-3d:hover {
+            transform: rotateY(0deg) rotateX(0deg) scale(1.1);
+        }
+
+        .logo-3d img {
+            width: 70%;
+        }
+
+        /* Professional Navigation */
+        .navbar {
+            padding: 20px 0;
+            transition: all 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            background: white !important;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            padding: 10px 0;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            padding: 8px 15px !important;
+            margin: 0 5px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .navbar.scrolled .nav-link {
+            color: var(--dark) !important;
+        }
+
+        .navbar.scrolled .nav-link:hover {
+            background: rgba(78, 205, 196, 0.1);
+        }
+
+        /* Professional Buttons */
+        .btn-primary {
+            background-color: var(--primary);
+            border: none;
+            padding: 12px 28px;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+        }
+
+        .btn-primary:hover {
+            background-color: #e05a5a;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+        }
+
+        .btn-outline-primary {
+            border-color: white;
+            color: white;
+            padding: 12px 28px;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline-primary:hover {
+            background: white;
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary);
+            border: none;
+            padding: 12px 28px;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(78, 205, 196, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background-color: #3dbeb5;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(78, 205, 196, 0.4);
+        }
+
+        /* Food Donation Form */
+        .donation-form {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            padding: 40px;
+            margin-top: -50px;
+            position: relative;
+            z-index: 3;
+        }
+
+        .form-control {
+            border-radius: 10px;
+            padding: 15px;
+            border: 2px solid #eee;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 0.25rem rgba(78, 205, 196, 0.25);
+        }
+
+        /* Food Quantity Calculator */
+        .quantity-calculator {
+            background: var(--accent);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        /* Enhanced Tracking Section */
+        .tracking-section {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            padding: 50px;
+            margin: 80px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tracking-section::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: url('https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80') center/cover;
+            opacity: 0.03;
+            z-index: 0;
+        }
+
+        .tracking-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+            padding: 30px;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .tracking-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+        }
+
+        .tracking-card.active {
+            border-left: 4px solid var(--primary);
+        }
+
+        .tracking-card.completed {
+            border-left: 4px solid var(--secondary);
+        }
+
+        .tracking-status {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .status-pending {
+            background: #FFF3CD;
+            color: #856404;
+        }
+
+        .status-active {
+            background: #CCE5FF;
+            color: #004085;
+        }
+
+        .status-completed {
+            background: #D4EDDA;
+            color: #155724;
+        }
+
+        .tracking-map {
+            height: 100%;
+            min-height: 300px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tracking-map::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            opacity: 0.05;
+            z-index: 0;
+        }
+
+        .driver-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .driver-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--light-gray);
+            margin-right: 15px;
+            overflow: hidden;
+        }
+
+        .driver-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .driver-info h5 {
+            margin-bottom: 5px;
+        }
+
+        .driver-rating {
+            color: var(--accent);
+            font-size: 14px;
+        }
+
+        /* NGO Recommendations */
+        .ngo-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .ngo-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        /* Professional Contact Form */
+        .contact-section {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            padding: 50px;
+            margin: 50px 0;
+            position: relative;
+            z-index: 3;
+        }
+
+        .contact-form .form-control {
+            border-radius: 8px;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+            height: 50px;
+        }
+
+        .contact-form .form-control:focus {
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 0.25rem rgba(78, 205, 196, 0.25);
+        }
+
+        .contact-form textarea.form-control {
+            height: 150px;
+            resize: none;
+        }
+
+        /* Blessing Points */
+        .points-container {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin: 50px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .points-display {
+            font-size: 3rem;
+            font-weight: bold;
+            text-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Professional Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate {
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        .delay-1 {
+            animation-delay: 0.2s;
+        }
+
+        .delay-2 {
+            animation-delay: 0.4s;
+        }
+
+        .delay-3 {
+            animation-delay: 0.6s;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 992px) {
+            .header-3d {
+                padding: 80px 0 60px;
+                clip-path: polygon(0 0, 100% 0, 100% 95%, 0 100%);
+            }
+            
+            .contact-section, .tracking-section {
+                padding: 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-3d {
+                padding: 60px 0 40px;
+            }
+            
+            .logo-3d {
+                width: 100px;
+                height: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Professional Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="https://via.placeholder.com/150x50/FF6B6B/FFFFFF?text=BlessingBite" alt="BlessingBite" height="30">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#how-it-works">How It Works</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#donate">Donate</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#tracking">Tracking</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact</a>
+                    </li>
+                    <li class="nav-item ms-2">
+                        <a class="btn btn-outline-primary" href="#donate">Donate Now</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 3D Animated Header -->
+    <header id="home" class="header-3d text-center text-white">
+        <div class="container">
+            <div class="logo-3d animate">
+                <img src="your-logo.png" alt="BlessingBite">
+            </div>
+            <h1 class="display-4 fw-bold mb-3 animate delay-1">BlessingBite<br>"EveryBitematters"</h1>
+            <p class="lead mb-4 animate delay-2">Unite with us to build a future where food is not wasted and no one goes hungry</p>
+            <div class="animate delay-3">
+                <a href="#donate" class="btn btn-primary btn-lg px-4 me-2">Donate Food</a>
+                <a href="#how-it-works" class="btn btn-outline-primary btn-lg px-4">Learn More</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container py-5">
+        <!-- Food Donation Form -->
+        <section id="donate" class="donation-form animate">
+            <h2 class="text-center mb-4">Donate Surplus Food</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="foodType" class="form-label">Food Type</label>
+                        <select class="form-select" id="foodType">
+                            <option selected>Select food type</option>
+                            <option>Wedding/Event Food</option>
+                            <option>Restaurant Surplus</option>
+                            <option>Hotel Buffet</option>
+                            <option>Homemade Food</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="foodDescription" class="form-label">Food Description</label>
+                        <textarea class="form-control" id="foodDescription" rows="2" placeholder="E.g., 50 plates biryani, 20 kg rice, etc."></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="pickupLocation" class="form-label">Pickup Location</label>
+                        <input type="text" class="form-control" id="pickupLocation" placeholder="Enter address">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="quantity-calculator">
+                        <h5><i class="fas fa-calculator me-2"></i>Quantity Calculator</h5>
+                        <div class="mb-3">
+                            <label for="quantity" class="form-label">Quantity (plates/kg)</label>
+                            <input type="number" class="form-control" id="quantity" placeholder="Enter quantity">
+                        </div>
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <span id="peopleCount">This will feed approximately 0 people</span>
+                        </div>
+                    </div>
+                    <div class="d-grid">
+                        <button class="btn btn-primary btn-lg">
+                            <i class="fas fa-utensils me-2"></i>Place Donation Order
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- NGO Recommendations -->
+        <section class="my-5">
+            <h2 class="text-center mb-4 animate">Recommended NGOs Near You</h2>
+            <div class="row">
+                <div class="col-md-4 animate delay-1">
+                    <div class="ngo-card">
+                        <img src="images/ngo-logo.png" class="img-fluid w-100" style="height: 150px; object-fit: contain; background: #f8f9fa; padding: 15px;" alt="ngo-logo">
+                        <div class="p-3">
+                            <h5>Hunger Free India</h5>
+                            <p class="text-muted"><i class="fas fa-map-marker-alt text-primary me-2"></i>2.5 km away</p>
+                            <p>Capacity: 100 meals/day</p>
+                            <button class="btn btn-sm btn-outline-primary w-100">Select This NGO</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 animate delay-2">
+                    <div class="ngo-card">
+                        <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1632&q=80" class="img-fluid w-100" style="height: 150px; object-fit: cover;" alt="NGO 2">
+                        <div class="p-3">
+                            <h5>Annapurna Foundation</h5>
+                            <p class="text-muted"><i class="fas fa-map-marker-alt text-primary me-2"></i>3.1 km away</p>
+                            <p>Capacity: 150 meals/day</p>
+                            <button class="btn btn-sm btn-outline-primary w-100">Select This NGO</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 animate delay-3">
+                    <div class="ngo-card">
+                        <img src="https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" class="img-fluid w-100" style="height: 150px; object-fit: cover;" alt="NGO 3">
+                        <div class="p-3">
+                            <h5>Food for All</h5>
+                            <p class="text-muted"><i class="fas fa-map-marker-alt text-primary me-2"></i>4.7 km away</p>
+                            <p>Capacity: 75 meals/day</p>
+                            <button class="btn btn-sm btn-outline-primary w-100">Select This NGO</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Enhanced Tracking Section -->
+        <section id="tracking" class="tracking-section animate delay-1">
+            <div class="row">
+                <div class="col-lg-5">
+                    <h2 class="mb-4">Real-Time Food Tracking</h2>
+                    <p class="text-muted mb-4">Monitor your donation's journey from your location to those in need.</p>
+                    
+                    <div class="tracking-card active">
+                        <div class="d-flex justify-content-between mb-3">
+                            <h5 class="mb-0">Order Confirmed</h5>
+                            <span class="tracking-status status-active">In Progress</span>
+                        </div>
+                        <p class="text-muted small">Your donation has been received and is being processed.</p>
+                        <div class="d-flex justify-content-between mt-3">
+                            <span class="text-muted small">10:30 AM</span>
+                            <i class="fas fa-check-circle text-primary"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="tracking-card">
+                        <div class="d-flex justify-content-between mb-3">
+                            <h5 class="mb-0">Driver Assigned</h5>
+                            <span class="tracking-status status-pending">Pending</span>
+                        </div>
+                        <p class="text-muted small">Waiting for driver to accept the delivery request.</p>
+                    </div>
+                    
+                    <div class="tracking-card">
+                        <div class="d-flex justify-content-between mb-3">
+                            <h5 class="mb-0">Food Collected</h5>
+                            <span class="tracking-status status-pending">Pending</span>
+                        </div>
+                        <p class="text-muted small">Driver will collect the food from your location.</p>
+                    </div>
+                    
+                    <div class="tracking-card">
+                        <div class="d-flex justify-content-between mb-3">
+                            <h5 class="mb-0">Delivered to NGO</h5>
+                            <span class="tracking-status status-pending">Pending</span>
+                        </div>
+                        <p class="text-muted small">Food will be delivered to the recipient NGO.</p>
+                    </div>
+                    
+                    <div class="driver-card">
+                        <div class="driver-avatar">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Driver">
+                        </div>
+                        <div class="driver-info">
+                            <h5 class="mb-1">Rajesh Kumar</h5>
+                            <p class="text-muted small mb-1">Auto Delivery Partner</p>
+                            <div class="driver-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                                <span class="text-muted ms-2">4.7 (128 reviews)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-7 mt-4 mt-lg-0">
+                    <div class="tracking-map">
+                        <div class="text-center">
+                            <i class="fas fa-map-marked-alt fa-4x text-primary mb-3"></i>
+                            <h4>Live Tracking Map</h4>
+                            <p class="text-muted">Real-time location tracking will appear here once driver is assigned</p>
+                            <button class="btn btn-secondary mt-3">
+                                <i class="fas fa-sync-alt me-2"></i>Refresh Status
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Blessing Points -->
+        <section class="points-container text-center animate delay-2">
+            <h2 class="mb-4">Your Blessing Points</h2>
+            <div class="points-display mb-3">1,250</div>
+            <p class="lead">Every donation earns you Blessing Points that can be redeemed for rewards</p>
+            <div class="mt-4">
+                <button class="btn btn-light me-2">Redeem Points</button>
+                <button class="btn btn-outline-light">How It Works</button>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section id="how-it-works" class="my-5 animate delay-3">
+            <div class="text-center mb-5">
+                <h2>How BlessingBite Works</h2>
+                <p class="text-muted">Our simple three-step process to reduce waste and feed the hungry</p>
+            </div>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body text-center p-4">
+                            <div class="bg-primary bg-opacity-10 text-primary rounded-circle p-3 d-inline-block mb-3">
+                                <i class="fas fa-utensils fa-2x"></i>
+                            </div>
+                            <h4 class="mb-3">1. Post Donation</h4>
+                            <p class="text-muted">Enter details about your surplus food - type, quantity, and pickup location.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body text-center p-4">
+                            <div class="bg-primary bg-opacity-10 text-primary rounded-circle p-3 d-inline-block mb-3">
+                                <i class="fas fa-people-carry fa-2x"></i>
+                            </div>
+                            <h4 class="mb-3">2. Match & Assign</h4>
+                            <p class="text-muted">We match with nearby NGOs and assign a delivery partner (auto or truck).</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body text-center p-4">
+                            <div class="bg-primary bg-opacity-10 text-primary rounded-circle p-3 d-inline-block mb-3">
+                                <i class="fas fa-heart fa-2x"></i>
+                            </div>
+                            <h4 class="mb-3">3. Track & Earn</h4>
+                            <p class="text-muted">Monitor the delivery in real-time and earn Blessing Points for your contribution.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="contact-section animate">
+            <div class="row">
+                <div class="col-lg-6">
+                    <h2 class="mb-4">Get In Touch</h2>
+                    <p class="text-muted mb-4">Have questions or suggestions? We'd love to hear from you.</p>
+                    
+                    <form class="contact-form">
+                        <div class="mb-4">
+                            <label for="name" class="form-label">Your Name</label>
+                            <input type="text" class="form-control" id="name" placeholder="Enter your name">
+                        </div>
+                        <div class="mb-4">
+                            <label for="email" class="form-label">Your Email Address</label>
+                            <input type="email" class="form-control" id="email" placeholder="Enter your email">
+                        </div>
+                        <div class="mb-4">
+                            <label for="message" class="form-label">Your Message</label>
+                            <textarea class="form-control" id="message" placeholder="Enter your message"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Send Message</button>
+                    </form>
+                </div>
+                <div class="col-lg-6">
+                    <div class="ps-lg-5 mt-5 mt-lg-0">
+                        <h3 class="mb-4">Our Offices</h3>
+                        <div class="d-flex mb-4">
+                            <div class="me-4">
+                                <i class="fas fa-map-marker-alt fa-2x text-primary"></i>
+                            </div>
+                            <div>
+                                <h5>Bangalore Headquarters</h5>
+                                <p class="text-muted mb-0">123 Food Rescue Avenue<br>Bangalore, KA 560001</p>
+                            </div>
+                        </div>
+                        <div class="d-flex mb-4">
+                            <div class="me-4">
+                                <i class="fas fa-phone-alt fa-2x text-primary"></i>
+                            </div>
+                            <div>
+                                <h5>Phone</h5>
+                                <p class="text-muted mb-0">+91 80 1234 5678<br>+91 98765 43210</p>
+                            </div>
+                        </div>
+                        <div class="d-flex">
+                            <div class="me-4">
+                                <i class="fas fa-envelope fa-2x text-primary"></i>
+                            </div>
+                            <div>
+                                <h5>Email</h5>
+                                <p class="text-muted mb-0">contact@blessingbite.org<br>support@blessingbite.org</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Professional Footer -->
+    <footer class="bg-dark text-white pt-5 pb-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <h5 class="text-uppercase mb-4">BlessingBite</h5>
+                    <p>Connecting surplus food with those in need through technology and compassion.</p>
+                    <div class="mt-4">
+                        <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h5 class="text-uppercase mb-4">Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-white">Home</a></li>
+                        <li class="mb-2"><a href="#" class="text-white">About Us</a></li>
+                        <li class="mb-2"><a href="#" class="text-white">How It Works</a></li>
+                        <li class="mb-2"><a href="#" class="text-white">Our Impact</a></li>
+                        <li><a href="#" class="text-white">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h5 class="text-uppercase mb-4">Food Sources</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-white">Weddings</a></li>
+                        <li class="mb-2"><a href="#" class="text-white">Restaurants</a></li>
+                        <li class="mb-2"><a href="#" class="text-white">Hotels</a></li>
+                        <li class="mb-2"><a href="#" class="text-white">Corporate Events</a></li>
+                        <li><a href="#" class="text-white">Households</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h5 class="text-uppercase mb-4">Newsletter</h5>
+                    <p>Subscribe to our newsletter for updates and success stories.</p>
+                    <div class="input-group mb-3">
+                        <input type="email" class="form-control" placeholder="Your Email">
+                        <button class="btn btn-primary" type="button">Subscribe</button>
+                    </div>
+                </div>
+            </div>
+            <hr class="mb-4" style="border-color: rgba(255,255,255,0.1);">
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="mb-0">&copy; 2023 BlessingBite. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <p class="mb-0">
+                        <a href="#" class="text-white me-3">Privacy Policy</a>
+                        <a href="#" class="text-white me-3">Terms of Service</a>
+                        <a href="#" class="text-white">FAQ</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Navbar scroll effect
+    window.addEventListener('scroll', function() {
+        const navbar = document.querySelector('.navbar');
+        if (window.scrollY > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+    });
+
+    // Quantity calculator logic
+    const quantityInput = document.getElementById('quantity');
+    const peopleCount = document.getElementById('peopleCount');
+    
+    if (quantityInput && peopleCount) {
+        quantityInput.addEventListener('input', function() {
+            const quantity = parseInt(this.value) || 0;
+            const people = Math.floor(quantity / 0.8 ); // Assuming 0.3kg per person
+            peopleCount.textContent = `This will feed approximately ${people} people`;
+        });
+    }
+
+    // Animation on scroll
+    const animateElements = document.querySelectorAll('.animate');
+    
+    function checkAnimation() {
+        animateElements.forEach(element => {
+            const elementPosition = element.getBoundingClientRect().top;
+            const screenPosition = window.innerHeight / 1.2;
+            
+            if (elementPosition < screenPosition) {
+                element.style.opacity = '1';
+            }
+        });
+    }
+    
+    window.addEventListener('load', checkAnimation);
+    window.addEventListener('scroll', checkAnimation);
+</script>
